@@ -54,13 +54,6 @@ page_template = """
 				font-family:verdana;
 			
 			}
-		
-				
-			
-			
-		
-	
-	
 			</style>
 	</head>
 	<body>
@@ -73,10 +66,6 @@ page_template = """
 				<a href="/contact" class="link"><span class="buton"> Contact Me</span></a> 
 			</div>
 			<hr>
-
-
-         	
-         
           <h3>Ip Adresses</h3> %(clientip)s
 	   <br>
         
@@ -89,41 +78,22 @@ page_template = """
   <input type="radio" name="s" value="improvable" >Improvable<br>
   
 </form>
-
 	
-			
-			
-			
-			
-				
-				
-	
-				
-				
-		
 	</div>	
 	</body>
 </html>
 """  
 liste=[]
-
-
-
 @route ('/index')
 def index():
-
-        
-    
     return template ('index')  
+
 @route ('/login', method='POST')
 def index_login():
     global liste
     def create_hash(password):
         pw_bytestring = password.encode()
         return sha256(pw_bytestring).hexdigest()
-   
-
-    
     password = request.forms.get ( 'password' )   
     pw = create_hash(password)
     if pw == 'df8b30e1d76295a2210d5e6caf75d73150baaa3e3da2d8f9cd2462a58ba4e853':
@@ -132,28 +102,21 @@ def index_login():
         return template ('index')
     else:
         return "<p> failed</p>"
+
 @route ('/biography')
 def biography():
-    
-   
     return template ('biography')
-    	
 
 @route ('/contact')
 def contact():
 	return template ('contact')	
-
 @route ('/')
-
 def projects():
     client_ip = request.environ.get('HTTP_X_FORWARDED_FOR') or request.environ.get('REMOTE_ADDR')   
     
     global liste
 
     liste=liste + [client_ip]
-
-        
-    
     q=0
     y = []
     while q < len(liste):
@@ -163,22 +126,10 @@ def projects():
     k=[]
     for i in y:
         k =k+[liste.count(i)] 
-        
-
-
     return page_template % {"clientip": y, "number": k}
-
-
-
-
-	
 @route('/static/<filepath:path>')
 def server_static(filepath):
 	return static_file(filepath, root='./staticfiles')
-
-	
-
-	
 run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)), debug ='True', reloader='True')
 
 
